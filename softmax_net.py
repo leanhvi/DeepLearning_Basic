@@ -39,15 +39,13 @@ def softmax(Z):
     Sum_E_Z = np.sum(E_Z)
     return E_Z / Sum_E_Z
 
-def input_data(X):
-    global A0
-    for i in range(l0):
-        A0[i] = X[i]
-    return
 
 def forward_propagate(X):
-    input_data(X)
-    global A1, A2
+    global A0, A1, A2
+    
+    for i in range(l0):
+        A0[i] = X[i]
+    
     A0_Bias = np.concatenate(([bias0], A0))
     A1 = np.dot(W01, A0_Bias)
     A1 = relu(A1)
@@ -67,13 +65,20 @@ print(A2)
 
 def backward_propagate(Y):
     global D01, D12
-    Delta2 = A2 - Y
-    W12_T = np.transpose(W12)
-    Delta1 = np.dot(W12_T, Delta2)
-    for i in range(1, l1+1):
-        for j in range(l2+1):
-            D12[i, j] = A1[i] *1
     
+    Delta2 = A2 - Y    
+    A1_Bias = np.concatenate(([bias1], A1))
+    for i in range(l1+1):
+        for j in range(l2):
+            D12[i, j] += A1_Bias[i] * Delta2[j]
+
+    W12_T = np.transpose(W12)
+    Delta1 = np.dot(W12_T, Delta2)            
+    A0_Bias = np.concatenate(([bias0], A0))
+    for i in range(l0+1):
+        for j in range(l1):
+            D01[i, j] += A0_Bias[i] * Delta1[j]
+                
     return
 
 
