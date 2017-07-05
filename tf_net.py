@@ -26,9 +26,6 @@ A0 = tf.Variable(tf.zeros([l0, 1], dtype=tf.float32))
 A1 = tf.Variable(tf.zeros([l1, 1], dtype=tf.float32))
 A2 = tf.Variable(tf.zeros([l2, 1], dtype=tf.float32))
 
-sess = tf.Session()
-init = tf.global_variables_initializer()
-sess.run(init)
 
 def forward_propagate(X):
     global A0, A1, A2
@@ -46,7 +43,7 @@ def forward_propagate(X):
         
     A2 = tf.nn.softmax(A2)
     
-    return A2    
+    return   
 
 
 def backward_propagate(Y):
@@ -63,7 +60,7 @@ def backward_propagate(Y):
     A0_Bias = tf.concat([bias0, A0], 0)
     D01 += tf.matmul(Delta1_slice, A0_Bias, transpose_b = True)
                 
-    return D01
+    return
 
  
 
@@ -90,16 +87,26 @@ labels = list(mnist.read_labels(dataset='training', path='mnist-data'))
 
 targets = make_target(labels)
     
+
+start = time.time()
+sess = tf.Session()
+init = tf.global_variables_initializer()
+sess.run(init)
+
+for i in range(100):
     
+    X = np.array(images[i]).reshape(l0, 1)
+    forward_propagate(X)
     
-X = np.array(images[1]).reshape(l0, 1)
-fw = forward_propagate(X)
-print(sess.run(fw))
+    Y = targets[i].reshape(l2, 1)    
+    backward_propagate(Y)
     
-Y = targets[0].reshape(l2, 1)    
-bw = backward_propagate(Y)
-print(sess.run(bw))
+    print("Iter: ", i)    
     
+print(sess.run(tf.Print(D01, [A2])))
+print("Time: ", time.time() - start)
+
+
 
     
 
