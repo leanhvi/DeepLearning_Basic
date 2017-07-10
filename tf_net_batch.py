@@ -14,7 +14,7 @@ l1 = 20
 l2 = 10
 
 train_size = 60000;  
-batch_size = 1;  
+batch_size = 2;  
 lr = 1
 
 bias0 = tf.ones([1, batch_size], dtype=tf.float32)
@@ -47,7 +47,7 @@ def forward_propagate(X):
 
     Z2 = tf.matmul(W12, A1_Bias)
         
-    A2 = tf.nn.softmax(Z2, dim=0)
+    A2 = tf.nn.softmax(Z2, dim = 0)
     
     return   
 
@@ -108,12 +108,12 @@ n_batchs = train_size / batch_size
 X = np.array(images).reshape(n_batchs, l0, batch_size)
 Y = targets.reshape(n_batchs, l2, batch_size) 
 
-for i in range(2):    
+for i in range(1):    
     forward_propagate(X[i])
     backward_propagate(Y[i])
     
     #update_weights()        
-    #print("Iter: ", i)    
+    print("Iter: ", i)    
     
     
     
@@ -124,7 +124,8 @@ print("Time: ", time.time() - start)
 #x = tf.ones([batch_size, 1], dtype=tf.float32)
 #print(sess.run(x))
 
-
+#print(X[0])
+#print(Y[0])
 
 
 
