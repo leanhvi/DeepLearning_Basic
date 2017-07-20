@@ -199,6 +199,6 @@ print("Threshold = %f"%threshold)
 y_predicted = to_binary(predicted, threshold)
 
 
-'''Validation'''
+'''VALIDATION PHASE'''
 from sklearn import metrics
 print(metrics.classification_report(y_test, y_predicted, target_names=['Sara', 'Normal']))
